@@ -1,12 +1,19 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+// Cria a conexão com o banco de dados usando Dapper
+builder.Services.AddScoped<IDbConnection>(_ =>
+    new NpgsqlConnection(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+
+// Registra os repositórios
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
