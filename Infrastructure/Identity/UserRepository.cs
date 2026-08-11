@@ -1,4 +1,6 @@
 using System.Data;
+
+using Npgsql;
 using Dapper;
 using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
 
@@ -6,11 +8,11 @@ namespace DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Identity;
 
 public class UserRepository : IUserRepository
 {
-	private readonly IDbConnection _connection;
+	private readonly string _connectionString;
 
-	public UserRepository(IDbConnection connection)
+	public UserRepository(IConfiguration configuration)
 	{
-		_connection = connection;
+        _connectionString = configuration.GetConnectionString("DefaultConnection");
 	}
 
 	public async Task<User?> GetByUsername(string username)
@@ -21,7 +23,8 @@ public class UserRepository : IUserRepository
             WHERE username = @Username
         """;
 
-		return await _connection.QuerySingleOrDefaultAsync<User>(
+		using var connection = new NpgsqlConnection(_connectionString);
+        return await connection.QuerySingleOrDefaultAsync<User>(
 			sql,
 			new { Username = username }
 		);
@@ -34,6 +37,7 @@ public class UserRepository : IUserRepository
             VALUES (@Id, @Username, @PasswordHash)
         """;
 
-		await _connection.ExecuteAsync(sql, user);
+		using var connection = new NpgsqlConnection(_connectionString);
+        await connection.ExecuteAsync(sql, user);
 	}
 }

@@ -1,10 +1,21 @@
+using System.Data;
+using System.Text;
+
+using Npgsql;
+using DotNetEnv;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
+using DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Identity;
+using DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Security;
+
 var builder = WebApplication.CreateBuilder(args);
 
+Env.Load();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-
-var app = builder.Build();
 
 // Cria a conexão com o banco de dados usando Dapper
 builder.Services.AddScoped<IDbConnection>(_ =>
@@ -15,6 +26,29 @@ builder.Services.AddScoped<IDbConnection>(_ =>
 // Registra os repositórios
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Configurações de segurança
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(secretKey)
+        };
+    });
+builder.Services.AddScoped<JwtService>();
+
+var app = builder.Build();
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -23,6 +57,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -2,9 +2,9 @@ namespace DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
 
 public class User
 {
-    public Guid Id { get; private set; }
-    public string Username { get; private set; }
-    public string PasswordHash { get; private set; }
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string PasswordHash { get; set; }
 
     public User(Guid id, string username, string passwordHash)
     {

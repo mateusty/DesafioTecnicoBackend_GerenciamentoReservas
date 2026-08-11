@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DesafioTecnicoBackend_GerenciamentoReservas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+511fe2daee7171bdeab3d579d71f1d631d2c0e09")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36fbfdcebe5edcca3659f6c18f1b15aa4458f2ab")]
 [assembly: System.Reflection.AssemblyProductAttribute("DesafioTecnicoBackend_GerenciamentoReservas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DesafioTecnicoBackend_GerenciamentoReservas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
