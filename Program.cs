@@ -6,14 +6,22 @@ using DotNetEnv;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
+using DesafioTecnicoBackend_GerenciamentoReservas.Application.Identity;
 using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
 using DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Identity;
 using DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Security;
 
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
-Env.Load();
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
 
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
