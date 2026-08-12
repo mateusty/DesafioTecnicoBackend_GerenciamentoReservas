@@ -56,6 +56,7 @@ builder.Services.AddScoped<JwtService>();
 
 var app = builder.Build();
 
+app.UsePathBase("/api");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
