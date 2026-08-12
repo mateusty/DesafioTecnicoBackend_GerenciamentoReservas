@@ -1,3 +1,5 @@
+using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
+
 namespace DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 
 public class BookingService

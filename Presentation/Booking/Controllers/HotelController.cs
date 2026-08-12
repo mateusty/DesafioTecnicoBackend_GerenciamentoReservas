@@ -1,5 +1,5 @@
-using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
-using DesafioTecnicoBackend_GerenciamentoReservas.Application.Identity;
+using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
+using DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,17 +16,24 @@ public class HotelController : ControllerBase
         _hotelService = hotelService;
     }
 
-    [HttpGet(Name = "GetHotels"))]
+    [HttpGet(Name = "GetHotels")]
     public IActionResult GetHotels()
     {
         var hotels = _hotelService.GetHotels();
         return Ok(hotels);
     }
 
+    [HttpGet("{id}", Name = "GetHotelById")]
+    public IActionResult GetHotelById(int id)
+    {
+        var hotel = _hotelService.GetHotelById(id);
+        return Ok(hotel);
+    }
+
     [HttpPost(Name = "PostHotel")]
-    public IActionResult PostHotel([FromBody] Hotel hotel)
+    public IActionResult PostHotel([FromBody] HotelRequest hotel)
     {
         _hotelService.PostHotel(hotel);
-        return CreatedAtAction(nameof(PostHotel), new { id = hotel.Id }, hotel);
+        return CreatedAtAction(nameof(PostHotel), hotel);
     }
 }

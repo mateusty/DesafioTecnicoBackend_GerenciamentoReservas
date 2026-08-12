@@ -1,5 +1,5 @@
-using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
-using DesafioTecnicoBackend_GerenciamentoReservas.Application.Identity;
+using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
+using DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 
 using Microsoft.AspNetCore.Mvc;
 

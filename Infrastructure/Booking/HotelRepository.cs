@@ -4,6 +4,7 @@ using Npgsql;
 using Dapper;
 
 using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
+using DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 
 namespace DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Booking;
 
@@ -19,7 +20,7 @@ public class HotelRepository : IHotelRepository
     public async Task<Hotel?> GetbyId(int id)
     {
         const string sql = """
-            SELECT id, name, country, city, address, rating, price_per_night
+            SELECT id, name, country, city, address, price_per_night AS PricePerNight
             FROM hotels
             WHERE id = @Id
         """;
@@ -34,7 +35,7 @@ public class HotelRepository : IHotelRepository
     public async Task<List<Hotel>> GetAll()
     {
         const string sql = """
-            SELECT id, name, country, city, address, rating, price_per_night
+            SELECT id, name, country, city, address, price_per_night AS PricePerNight
             FROM hotels
         """;
 
@@ -42,11 +43,11 @@ public class HotelRepository : IHotelRepository
         return (await connection.QueryAsync<Hotel>(sql)).ToList();
     }
 
-    public async Task Save(Hotel hotel)
+    public async Task Save(HotelRequest hotel)
     {
         const string sql = """
-            INSERT INTO hotels (id, name, country, city, address, rating, price_per_night)
-            VALUES (@Id, @Name, @Country, @City, @Address, @Rating, @PricePerNight)
+            INSERT INTO hotels (name, country, city, address, price_per_night)
+            VALUES (@Name, @Country, @City, @Address, @PricePerNight)
         """;
 
         using var connection = new NpgsqlConnection(_connectionString);

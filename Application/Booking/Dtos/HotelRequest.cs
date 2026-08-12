@@ -1,8 +1,7 @@
-namespace DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
+namespace DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 
-public class Hotel
+public class HotelRequest
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
     public string City { get; set; }

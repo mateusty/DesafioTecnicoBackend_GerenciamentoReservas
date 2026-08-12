@@ -7,9 +7,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 using DesafioTecnicoBackend_GerenciamentoReservas.Application.Identity;
-using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
+using DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 using DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Identity;
+using DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Booking;
 using DesafioTecnicoBackend_GerenciamentoReservas.Infrastructure.Security;
+using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
+using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Identity;
+
 
 DotNetEnv.Env.Load();
 
@@ -33,6 +37,7 @@ builder.Services.AddScoped<IDbConnection>(_ =>
 
 // Registra os repositórios
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 
 // Configurações de segurança
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -53,6 +58,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<HotelService>();
 
 var app = builder.Build();
 

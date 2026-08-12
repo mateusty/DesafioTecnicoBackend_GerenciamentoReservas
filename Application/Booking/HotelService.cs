@@ -1,3 +1,5 @@
+using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
+
 namespace DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 
 public class HotelService
@@ -10,18 +12,30 @@ public class HotelService
 
     public List<Hotel> GetHotels()
     {
-        var hotels = _hotelRepository.GetAll();
-        if(hotels == null) {
+        var hotels = _hotelRepository.GetAll().Result;
+        if (hotels == null)
+        {
             throw new InvalidOperationException("No hotels found");
         }
         return hotels;
     }
 
-    public void PostHotel(Hotel hotel)
+    public Hotel GetHotelById(int id)
+    {
+        var hotel = _hotelRepository.GetbyId(id).Result;
+        if (hotel == null)
+        {
+            throw new KeyNotFoundException($"Hotel with ID {id} not found");
+        }
+        return hotel;
+    }
+
+    public void PostHotel(HotelRequest hotel)
     {
         if (hotel == null)
         {
             throw new ArgumentNullException(nameof(hotel), "Hotel cannot be null");
         }
         _hotelRepository.Save(hotel);
+    }
 }
