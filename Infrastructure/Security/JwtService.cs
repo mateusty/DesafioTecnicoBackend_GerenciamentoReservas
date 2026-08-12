@@ -26,6 +26,7 @@ public class JwtService
 			new Claim(JwtRegisteredClaimNames.UniqueName, username),
 			new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 		};
+
 		var token = new JwtSecurityToken(
 			issuer: jwtSettings["Issuer"],
 			audience: jwtSettings["Audience"],

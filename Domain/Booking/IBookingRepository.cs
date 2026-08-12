@@ -1,8 +1,11 @@
+using DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
+
 namespace DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
 
 public interface IBookingRepository
 {
-    Task<Booking?> GetByUserAndHotel(int userId, int hotelId);
-    Task<List<Booking>> GetByUser(int userId);
-    Task Save(Booking booking);
+    Task<Bookings> GetbyId(int id);
+    Task<List<Bookings>> GetbyUser(Guid userId);
+    Task Save(BookingRequest booking, Guid userId);
+    Task Edit(BookingRequest booking, int id, Guid userId);
 }

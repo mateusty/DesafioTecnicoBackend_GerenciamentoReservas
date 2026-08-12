@@ -38,6 +38,7 @@ builder.Services.AddScoped<IDbConnection>(_ =>
 // Registra os repositórios
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
 // Configurações de segurança
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -46,6 +47,8 @@ var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.MapInboundClaims = false;
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -59,6 +62,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<HotelService>();
+builder.Services.AddScoped<BookingService>();
 
 var app = builder.Build();
 

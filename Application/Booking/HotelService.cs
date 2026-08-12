@@ -30,12 +30,12 @@ public class HotelService
         return hotel;
     }
 
-    public void PostHotel(HotelRequest hotel)
+    public int PostHotel(HotelRequest hotel)
     {
         if (hotel == null)
         {
             throw new ArgumentNullException(nameof(hotel), "Hotel cannot be null");
         }
-        _hotelRepository.Save(hotel);
+        return _hotelRepository.Save(hotel).Result;
     }
 }

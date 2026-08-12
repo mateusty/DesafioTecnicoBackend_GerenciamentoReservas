@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+
 using DesafioTecnicoBackend_GerenciamentoReservas.Domain.Booking;
 using DesafioTecnicoBackend_GerenciamentoReservas.Application.Booking;
 
@@ -7,6 +9,7 @@ namespace DesafioTecnicoBackend_GerenciamentoReservas.Presentation.Booking;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class HotelController : ControllerBase
 {
     private readonly HotelService _hotelService;
@@ -33,7 +36,7 @@ public class HotelController : ControllerBase
     [HttpPost(Name = "PostHotel")]
     public IActionResult PostHotel([FromBody] HotelRequest hotel)
     {
-        _hotelService.PostHotel(hotel);
-        return CreatedAtAction(nameof(PostHotel), hotel);
+        var id = _hotelService.PostHotel(hotel);
+        return CreatedAtAction(nameof(PostHotel), new { id }, hotel);
     }
 }

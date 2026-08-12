@@ -6,5 +6,5 @@ public interface IHotelRepository
 {
     Task<Hotel?> GetbyId(int id);
     Task<List<Hotel>> GetAll();
-    Task Save(HotelRequest hotel);
+    Task<int> Save(HotelRequest hotel);
 }

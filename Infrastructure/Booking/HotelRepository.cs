@@ -43,14 +43,16 @@ public class HotelRepository : IHotelRepository
         return (await connection.QueryAsync<Hotel>(sql)).ToList();
     }
 
-    public async Task Save(HotelRequest hotel)
+    public async Task<int> Save(HotelRequest hotel)
     {
         const string sql = """
             INSERT INTO hotels (name, country, city, address, price_per_night)
             VALUES (@Name, @Country, @City, @Address, @PricePerNight)
+            RETURNING id;
         """;
 
         using var connection = new NpgsqlConnection(_connectionString);
-        await connection.ExecuteAsync(sql, hotel);
+        
+        return await connection.QuerySingleAsync<int>(sql, hotel);
     }
 }
