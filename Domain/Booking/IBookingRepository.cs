@@ -8,4 +8,5 @@ public interface IBookingRepository
     Task<List<Bookings>> GetbyUser(Guid userId);
     Task Save(BookingRequest booking, Guid userId);
     Task Edit(BookingRequest booking, int id, Guid userId);
+    Task Delete(int id);
 }

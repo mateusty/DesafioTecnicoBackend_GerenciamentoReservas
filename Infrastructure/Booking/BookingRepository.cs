@@ -73,4 +73,15 @@ public class BookingRepository : IBookingRepository
         using var connection = new NpgsqlConnection(_connectionString);
         await connection.ExecuteAsync(sql, new Bookings(booking, id, userId));
     }
+
+    public async Task Delete(int id)
+    {
+        const string sql = """
+            DELETE FROM bookings
+            WHERE id = @Id
+        """;
+        using var connection = new NpgsqlConnection(_connectionString);
+        await connection.ExecuteAsync(sql, new { Id = id} );
+
+    }
 }

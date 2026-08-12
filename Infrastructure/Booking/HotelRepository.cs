@@ -55,4 +55,27 @@ public class HotelRepository : IHotelRepository
         
         return await connection.QuerySingleAsync<int>(sql, hotel);
     }
+
+    public async Task Delete(int id)
+    {
+        const string sql = """
+            DELETE FROM hotels
+            WHERE id = @Id
+        """;
+
+        using var connection = new NpgsqlConnection(_connectionString);
+        await connection.ExecuteAsync(sql, new { Id = id });
+    }
+
+    public async Task Edit(HotelRequest hotel, int id)
+    {
+        const string sql = """
+            UPDATE hotels
+            SET id = @Id, name = @Name, country = @Country, city = @City, address = @Address, price_per_night = @PricePerNight
+            WHERE id = @Id
+        """;
+
+        using var connection = new NpgsqlConnection(_connectionString);
+        await connection.ExecuteAsync(sql, new Hotel(hotel, id));
+    }
 }

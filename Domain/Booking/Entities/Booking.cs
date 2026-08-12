@@ -23,14 +23,7 @@ public class Bookings
         Status = booking.Status;
     }
 
-    public Bookings(int id, Guid userId, int hotelId, int roomNumber, DateTime startDate, DateTime endDate, string status)
+    public Bookings()
     {
-        Id = id;
-        UserId = userId;
-        HotelId = hotelId;
-        RoomNumber = roomNumber;
-        StartDate = startDate;
-        EndDate = endDate;
-        Status = status;
     }
 }

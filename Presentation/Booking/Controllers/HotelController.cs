@@ -20,23 +20,37 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet(Name = "GetHotels")]
-    public IActionResult GetHotels()
+    public async Task<IActionResult> GetHotels()
     {
-        var hotels = _hotelService.GetHotels();
+        var hotels = await _hotelService.GetHotels();
         return Ok(hotels);
     }
 
     [HttpGet("{id}", Name = "GetHotelById")]
-    public IActionResult GetHotelById(int id)
+    public async Task<IActionResult> GetHotelById(int id)
     {
-        var hotel = _hotelService.GetHotelById(id);
+        var hotel = await _hotelService.GetHotelById(id);
         return Ok(hotel);
     }
 
     [HttpPost(Name = "PostHotel")]
-    public IActionResult PostHotel([FromBody] HotelRequest hotel)
+    public async Task<IActionResult> PostHotel([FromBody] HotelRequest hotel)
     {
-        var id = _hotelService.PostHotel(hotel);
+        var id = await _hotelService.PostHotel(hotel);
         return CreatedAtAction(nameof(PostHotel), new { id }, hotel);
+    }
+
+    [HttpDelete("{id}", Name = "DeleteHotel")]
+    public async Task<IActionResult> DeleteHotel(int id)
+    {
+        await _hotelService.DeleteHotel(id);
+        return NoContent();
+    }
+
+    [HttpPut("{id}", Name = "PutHotel")]
+    public async Task<IActionResult> EditHotel([FromBody] HotelRequest hotel, int id)
+    {
+        await _hotelService.EditHotel(hotel, id);
+        return NoContent();
     }
 }
