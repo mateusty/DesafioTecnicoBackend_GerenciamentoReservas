@@ -24,11 +24,6 @@ public class BookingService
 
 	public async Task PostBooking(BookingRequest bookingRequest, Guid userId)
     {
-		if (bookingRequest == null)
-		{
-            throw new MissingBodyException("Booking cannot be null");
-        }
-
         var hotelDb = await _hotelRepository.GetbyId(bookingRequest.HotelId);
 
         if (hotelDb == null)
@@ -52,10 +47,6 @@ public class BookingService
 	public async Task EditBooking(BookingRequest bookingRequest, int id)
     {
         var databaseBooking = _bookingRepository.GetbyId(id).Result;
-        if (bookingRequest == null)
-        {
-            throw new MissingBodyException("Booking cannot be null");
-        }
 
         Bookings booking = new Bookings()
         {
@@ -69,5 +60,17 @@ public class BookingService
         };
 
         await _bookingRepository.Edit(booking);
+    }
+
+    public async Task DeleteBooking(int id)
+    {
+        var booking = await _bookingRepository.GetbyId(id);
+
+        if (booking == null)
+        {
+            throw new NotFoundException($"Hotel with ID {id} not found");
+        }
+
+        await _bookingRepository.Delete(id);
     }
 }

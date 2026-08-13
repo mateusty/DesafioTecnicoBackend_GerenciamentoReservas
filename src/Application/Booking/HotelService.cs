@@ -34,11 +34,6 @@ public class HotelService
 
     public async Task<int> PostHotel(HotelRequest hotelRequest)
     {
-        if (hotelRequest == null)
-        {
-            throw new MissingBodyException("Hotel cannot be null");
-        }
-
         Hotel hotel = new Hotel()
         {
             Name = hotelRequest.Name,
@@ -53,12 +48,19 @@ public class HotelService
 
     public async Task DeleteHotel(int id)
     {
+        var hotel = await _hotelRepository.GetbyId(id);
+
+        if(hotel == null)
+        {
+            throw new NotFoundException($"Hotel with ID {id} not found");
+        }
+
         await _hotelRepository.Delete(id);
     }
 
     public async Task EditHotel(HotelRequest hotelRequest, int id)
     {
-        var hotelDb = _hotelRepository.GetbyId(id);
+        var hotelDb = await _hotelRepository.GetbyId(id);
         if (hotelDb == null)
         {
             throw new NotFoundException($"Hotel with ID {id} not found");

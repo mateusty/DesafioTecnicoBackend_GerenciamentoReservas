@@ -21,27 +21,34 @@ public class BookingController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetByUser()
+    public async Task<IActionResult> GetByUser()
     {
         Guid userId = Guid.Parse(User.FindFirst("sub").Value);
 
-        var bookings = _bookingService.GetByUser(userId);
+        var bookings = await _bookingService.GetByUser(userId);
         return Ok(bookings);
     }
 
     [HttpPost(Name = "PostBooking")]
-    public IActionResult PostBooking([FromBody] BookingRequest booking)
+    public async Task<IActionResult> PostBooking([FromBody] BookingRequest booking)
     {
         Guid userId = Guid.Parse(User.FindFirst("sub").Value);
 
-        _bookingService.PostBooking(booking, userId);
+        await _bookingService.PostBooking(booking, userId);
         return CreatedAtAction(nameof(GetByUser), new { userId = userId }, booking);
     }
 
     [HttpPut("{id}", Name = "EditBooking")]
-    public IActionResult EditBooking(int id, [FromBody] BookingRequest booking)
+    public async Task<IActionResult> EditBooking(int id, [FromBody] BookingRequest booking)
     {
-        _bookingService.EditBooking(booking, id);
+        await _bookingService.EditBooking(booking, id);
+        return NoContent();
+    }
+
+    [HttpDelete("{id}", Name = "DeleteBooking")]
+    public async Task<IActionResult> DeleteBooking(int id)
+    {
+        await _bookingService.DeleteBooking(id);
         return NoContent();
     }
 }
