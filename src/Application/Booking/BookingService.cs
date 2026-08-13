@@ -1,3 +1,5 @@
+using Application.Booking.Exceptions;
+
 using Domain.Booking;
 using Domain.Identity;
 
@@ -24,14 +26,14 @@ public class BookingService
     {
 		if (bookingRequest == null)
 		{
-            throw new ArgumentNullException(nameof(bookingRequest), "Booking cannot be null");
+            throw new MissingBodyException("Booking cannot be null");
         }
 
         var hotelDb = await _hotelRepository.GetbyId(bookingRequest.HotelId);
 
         if (hotelDb == null)
         {
-            throw new KeyNotFoundException($"Hotel with ID {bookingRequest.HotelId} not found");
+            throw new NotFoundException($"Hotel with ID {bookingRequest.HotelId} not found");
         }
 
         Bookings booking = new Bookings()
@@ -52,7 +54,7 @@ public class BookingService
         var databaseBooking = _bookingRepository.GetbyId(id).Result;
         if (bookingRequest == null)
         {
-            throw new ArgumentNullException(nameof(bookingRequest), "Booking cannot be null");
+            throw new MissingBodyException("Booking cannot be null");
         }
 
         Bookings booking = new Bookings()

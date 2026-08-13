@@ -1,18 +1,24 @@
 using System.Data;
 using System.Text;
 
-using Npgsql;
-using DotNetEnv;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-using Application.Identity;
 using Application.Booking;
-using Infrastructure.Identity;
-using Infrastructure.Booking;
-using Infrastructure.Security;
+using Application.Identity;
+
 using Domain.Booking;
 using Domain.Identity;
+
+using DotNetEnv;
+
+using Infrastructure.Booking;
+using Infrastructure.Identity;
+using Infrastructure.Security;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
+using Npgsql;
+
+using Presentation.Exceptions;
 
 
 DotNetEnv.Env.Load();
@@ -39,6 +45,10 @@ builder.Services.AddScoped<IDbConnection>(_ =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
+// Adicionando o handler de exceptions
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // Configurações de segurança
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -74,6 +84,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

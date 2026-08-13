@@ -1,3 +1,5 @@
+using Application.Booking.Exceptions;
+
 using Domain.Booking;
 
 namespace Application.Booking;
@@ -15,7 +17,7 @@ public class HotelService
         var hotels = await _hotelRepository.GetAll();
         if (hotels == null)
         {
-            throw new InvalidOperationException("No hotels found");
+            throw new NotFoundException("No hotels found");
         }
         return hotels;
     }
@@ -25,7 +27,7 @@ public class HotelService
         var hotel = await _hotelRepository.GetbyId(id);
         if (hotel == null)
         {
-            throw new KeyNotFoundException($"Hotel with ID {id} not found");
+            throw new NotFoundException($"Hotel with ID {id} not found");
         }
         return hotel;
     }
@@ -34,7 +36,7 @@ public class HotelService
     {
         if (hotelRequest == null)
         {
-            throw new ArgumentNullException(nameof(hotelRequest), "Hotel cannot be null");
+            throw new MissingBodyException("Hotel cannot be null");
         }
 
         Hotel hotel = new Hotel()
@@ -59,7 +61,7 @@ public class HotelService
         var hotelDb = _hotelRepository.GetbyId(id);
         if (hotelDb == null)
         {
-            throw new KeyNotFoundException($"Hotel with ID {id} not found");
+            throw new NotFoundException($"Hotel with ID {id} not found");
         }
 
         Hotel hotel = new Hotel()
