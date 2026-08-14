@@ -129,7 +129,7 @@ public class BookingIntegrationTests : IClassFixture<TestWebApplicationFactory>,
         var response = await _client.PutAsJsonAsync($"/booking/{bookingId}", booking);
 
         // Assert
-        Assert.True(((int)response.StatusCode) == 204 || ((int)response.StatusCode) == 404);
+        Assert.True(((int)response.StatusCode) == 204);
     }
 
     [Fact]
@@ -150,7 +150,7 @@ public class BookingIntegrationTests : IClassFixture<TestWebApplicationFactory>,
         var response = await _client.DeleteAsync($"/booking/{bookingId}");
 
         // Assert
-        Assert.True(((int)response.StatusCode) == 204 || ((int)response.StatusCode) == 404);
+        Assert.True(((int)response.StatusCode) == 204);
     }
 
     // Método auxiliar para criar hotel

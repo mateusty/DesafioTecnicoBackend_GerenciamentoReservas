@@ -108,7 +108,7 @@ public class HotelIntegrationTests : IClassFixture<TestWebApplicationFactory>, I
         var response = await _client.PutAsJsonAsync($"/hotel/{hotelId}", hotel);
 
         // Assert
-        Assert.True(((int)response.StatusCode) == 204 || ((int)response.StatusCode) == 404);
+        Assert.True(((int)response.StatusCode) == 204);
     }
 
     [Fact]
@@ -133,7 +133,7 @@ public class HotelIntegrationTests : IClassFixture<TestWebApplicationFactory>, I
         Console.WriteLine($"Body: {body}");
 
         // Assert
-        Assert.True(((int)response.StatusCode) == 204 || ((int)response.StatusCode) == 404);
+        Assert.True(((int)response.StatusCode) == 204);
     }
 
     // Método auxiliar para criar hotel
