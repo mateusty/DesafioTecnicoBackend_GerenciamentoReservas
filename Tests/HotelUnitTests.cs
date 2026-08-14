@@ -4,9 +4,9 @@ using Moq;
 using Domain.Booking;
 using Application.Booking.Exceptions;
 
-namespace Tests;
+namespace UnitTests;
 
-public class HotelTests
+public class HotelUnitTests
 {
     [Fact]
     public async Task GivenEnoughDataInDb_WhenGettingAll_ReturnsAllHotelData()

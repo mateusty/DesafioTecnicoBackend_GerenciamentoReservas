@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Application.Booking;
+﻿using Application.Booking;
 using Application.Booking.Exceptions;
 
 using Domain.Booking;
-using Domain.Identity;
 
 using Moq;
 
-namespace Tests;
+namespace UnitTests;
 
-public class BookingTests
+public class BookingUnitTests
 {
     [Fact]
     public async Task GivenEnoughDataInDb_WhenGettingByUser_ReturnsAllBookings()
