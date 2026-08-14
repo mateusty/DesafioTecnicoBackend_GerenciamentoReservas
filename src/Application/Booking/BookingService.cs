@@ -46,7 +46,12 @@ public class BookingService
 
 	public async Task EditBooking(BookingRequest bookingRequest, int id)
     {
-        var databaseBooking = _bookingRepository.GetbyId(id).Result;
+        var databaseBooking = await _bookingRepository.GetbyId(id);
+
+        if (databaseBooking == null)
+        {
+            throw new NotFoundException($"Booking with ID {id} not found");
+        }
 
         Bookings booking = new Bookings()
         {
@@ -68,7 +73,7 @@ public class BookingService
 
         if (booking == null)
         {
-            throw new NotFoundException($"Hotel with ID {id} not found");
+            throw new NotFoundException($"Booking with ID {id} not found");
         }
 
         await _bookingRepository.Delete(id);
