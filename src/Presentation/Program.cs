@@ -74,6 +74,16 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<HotelService>();
 builder.Services.AddScoped<BookingService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 app.UsePathBase("/api");
@@ -87,6 +97,7 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
