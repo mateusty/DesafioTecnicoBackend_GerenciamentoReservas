@@ -9,23 +9,34 @@ namespace Presentation.Identity;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
+    private readonly IHostEnvironment _environment;
 
-    public AuthController(AuthService authService)
+    public AuthController(AuthService authService, IHostEnvironment environment)
     {
         _authService = authService;
+        _environment = environment;
     }
 
     [HttpPost("login" , Name = "Login")]
-    public IActionResult DoLogin([FromBody] LoginRequest request)
+    public async Task<IActionResult> DoLogin([FromBody] LoginRequest request)
     {
-        var token = _authService.DoLogin(request.Username, request.Password);
+        var token = await _authService.DoLogin(request.Username, request.Password);
+        var cookieOptions = new CookieOptions()
+        {
+            IsEssential = true,
+            Expires = DateTime.UtcNow.AddMinutes(60),
+            Secure = !_environment.IsEnvironment("Testing"),
+            HttpOnly = true,
+            SameSite = SameSiteMode.Lax
+        };
+        Response.Cookies.Append("accessToken", token, cookieOptions);
         return Ok(new { Token = token });
     }
 
     [HttpPost("register", Name = "Register")]
-    public ActionResult<string> Register([FromBody] LoginRequest request)
+    public async Task<ActionResult<string>> Register([FromBody] LoginRequest request)
     {
-        _authService.Register(request.Username, request.Password);
+        await _authService.Register(request.Username, request.Password);
 
         return Ok("Registration successful");
     }
