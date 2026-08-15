@@ -2,6 +2,9 @@
 using Application.Booking.Exceptions;
 
 using Domain.Booking;
+using Domain.Identity;
+
+using MassTransit;
 
 using Moq;
 
@@ -32,7 +35,10 @@ public class BookingUnitTests
         var mockRepoBooking = new Mock<IBookingRepository>();
         mockRepoBooking.Setup(r => r.GetbyUser(userId)).ReturnsAsync(bookings);
 
-        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object);
+        var mockRepoUser = new Mock<IUserRepository>();
+        var mockPublishEndpoint = new Mock<IPublishEndpoint>();
+
+        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object, mockRepoUser.Object, mockPublishEndpoint.Object);
 
         // Act
         var result = await service.GetByUser(userId);
@@ -63,7 +69,12 @@ public class BookingUnitTests
 
         var mockRepoBooking = new Mock<IBookingRepository>();
 
-        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object);
+        var mockRepoUser = new Mock<IUserRepository>();
+        mockRepoUser.Setup(r => r.GetbyId(userId)).ReturnsAsync(new User(userId, "teste@gmail.com", "123"));
+
+        var mockPublishEndpoint = new Mock<IPublishEndpoint>();
+
+        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object, mockRepoUser.Object, mockPublishEndpoint.Object);
 
         // Act
         await service.PostBooking(booking, userId);
@@ -100,7 +111,10 @@ public class BookingUnitTests
 
         var mockRepoBooking = new Mock<IBookingRepository>();
 
-        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object);
+        var mockRepoUser = new Mock<IUserRepository>();
+        var mockPublishEndpoint = new Mock<IPublishEndpoint>();
+
+        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object, mockRepoUser.Object, mockPublishEndpoint.Object);
 
         // Act
         var exception = await Assert.ThrowsAsync<NotFoundException>(() => service.PostBooking(booking, userId));
@@ -138,7 +152,10 @@ public class BookingUnitTests
         var mockRepoBooking = new Mock<IBookingRepository>();
         mockRepoBooking.Setup(r => r.GetbyId(bookingId)).ReturnsAsync(databaseBooking);
 
-        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object);
+        var mockRepoUser = new Mock<IUserRepository>();
+        var mockPublishEndpoint = new Mock<IPublishEndpoint>();
+
+        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object, mockRepoUser.Object, mockPublishEndpoint.Object);
 
         // Act
         await service.EditBooking(booking, bookingId);
@@ -176,7 +193,10 @@ public class BookingUnitTests
         var mockRepoBooking = new Mock<IBookingRepository>();
         mockRepoBooking.Setup(r => r.GetbyId(bookingId)).ReturnsAsync((Bookings?)null);
 
-        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object);
+        var mockRepoUser = new Mock<IUserRepository>();
+        var mockPublishEndpoint = new Mock<IPublishEndpoint>();
+
+        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object, mockRepoUser.Object, mockPublishEndpoint.Object);
 
         // Act
         var exception = await Assert.ThrowsAsync<NotFoundException>(() => service.EditBooking(booking, bookingId));
@@ -197,7 +217,10 @@ public class BookingUnitTests
         var mockRepoBooking = new Mock<IBookingRepository>();
         mockRepoBooking.Setup(r => r.GetbyId(bookingId)).ReturnsAsync(new Bookings());
 
-        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object);
+        var mockRepoUser = new Mock<IUserRepository>();
+        var mockPublishEndpoint = new Mock<IPublishEndpoint>();
+
+        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object, mockRepoUser.Object, mockPublishEndpoint.Object);
 
         // Act
         await service.DeleteBooking(bookingId);
@@ -218,7 +241,10 @@ public class BookingUnitTests
         var mockRepoBooking = new Mock<IBookingRepository>();
         mockRepoBooking.Setup(r => r.GetbyId(It.IsAny<int>())).ReturnsAsync((Bookings?)null);
 
-        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object);
+        var mockRepoUser = new Mock<IUserRepository>();
+        var mockPublishEndpoint = new Mock<IPublishEndpoint>();
+
+        var service = new BookingService(mockRepoBooking.Object, mockRepoHotel.Object, mockRepoUser.Object, mockPublishEndpoint.Object);
 
         // Act
         var exception = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteBooking(bookingId));

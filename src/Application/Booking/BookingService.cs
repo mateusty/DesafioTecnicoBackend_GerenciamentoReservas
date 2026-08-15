@@ -52,7 +52,7 @@ public class BookingService
 
         // Pegando informações extras para mandar o evento para o RabbitMQ
         var user = await _userRepository.GetbyId(userId);
-        var userEmail = user!.Username;
+        var userEmail = user!.Email;
 
         // Manda o evento para a fila do RabbitMQ
         await _publishEndpoint.Publish<SendBookingEmail>(new

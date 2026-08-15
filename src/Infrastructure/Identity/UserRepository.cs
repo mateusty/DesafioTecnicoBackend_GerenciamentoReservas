@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
 	public async Task<User?> GetbyId(Guid id)
 	{
         const string sql = """
-            SELECT id, username, password_hash AS PasswordHash
+            SELECT id, email, password_hash AS PasswordHash
             FROM users
             WHERE id = @Id
         """;
@@ -31,26 +31,26 @@ public class UserRepository : IUserRepository
         );
     }
 
-	public async Task<User?> GetByUsername(string username)
+	public async Task<User?> GetByEmail(string email)
 	{
 		const string sql = """
-            SELECT id, username, password_hash AS PasswordHash
+            SELECT id, email, password_hash AS PasswordHash
             FROM users
-            WHERE username = @Username
+            WHERE email = @Email
         """;
 
 		using var connection = new NpgsqlConnection(_connectionString);
         return await connection.QuerySingleOrDefaultAsync<User>(
 			sql,
-			new { Username = username }
+			new { Email = email }
 		);
 	}
 
 	public async Task Save(User user)
 	{
 		const string sql = """
-            INSERT INTO users (id, username, password_hash)
-            VALUES (@Id, @Username, @PasswordHash)
+            INSERT INTO users (id, email, password_hash)
+            VALUES (@Id, @Email, @PasswordHash)
         """;
 
 		using var connection = new NpgsqlConnection(_connectionString);

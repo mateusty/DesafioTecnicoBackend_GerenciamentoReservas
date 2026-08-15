@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     [HttpPost("login" , Name = "Login")]
     public async Task<IActionResult> DoLogin([FromBody] LoginRequest request)
     {
-        var token = await _authService.DoLogin(request.Username, request.Password);
+        var token = await _authService.DoLogin(request.Email, request.Password);
         var cookieOptions = new CookieOptions()
         {
             IsEssential = true,
@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
     [HttpPost("register", Name = "Register")]
     public async Task<ActionResult<string>> Register([FromBody] LoginRequest request)
     {
-        await _authService.Register(request.Username, request.Password);
+        await _authService.Register(request.Email, request.Password);
 
         return Ok("Registration successful");
     }

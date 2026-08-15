@@ -11,9 +11,9 @@ public class AuthService
         _userRepository = userRepository;
         _jwtService = jwtService;
     }
-    public async Task<string> DoLogin(string username, string password)
+    public async Task<string> DoLogin(string email, string password)
     {
-        var user = await _userRepository.GetByUsername(username);
+        var user = await _userRepository.GetByEmail(email);
         if (user == null)
         {
             throw new UnauthorizedAccessException("Login failed: Invalid password or username");
@@ -23,11 +23,11 @@ public class AuthService
         {
             throw new UnauthorizedAccessException("Login failed: Invalid password or username");
         }
-        var token = _jwtService.GenerateToken(user.Id, user.Username);
+        var token = _jwtService.GenerateToken(user.Id, user.Email);
         return token;
     }
-    public async Task Register(string username, string password)
+    public async Task Register(string email, string password)
     {
-        await _userRepository.Save(new User(Guid.CreateVersion7(), username, PasswordHasher.HashPassword(password)));
+        await _userRepository.Save(new User(Guid.CreateVersion7(), email, PasswordHasher.HashPassword(password)));
     }
 }

@@ -37,7 +37,7 @@ public class BookingIntegrationTests : IClassFixture<TestWebApplicationFactory>,
     {
         var loginDetails = new
         {
-            Username = "teste@gmail.com",
+            Email = "teste@gmail.com",
             Password = "123"
         };
 

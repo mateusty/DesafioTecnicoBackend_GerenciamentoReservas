@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.RabbitMQ
 {
+    // O Consumer deveria ficar em uma API separada, mas pelo escopo do projeto, deixei aqui com o intuito de aprendizado
     public class SendBookingEmailConsumer : IConsumer<SendBookingEmail>
     {
         private readonly ILogger<SendBookingEmailConsumer> _logger;
