@@ -33,6 +33,22 @@ public class AuthController : ControllerBase
         return Ok(new { Token = token });
     }
 
+    [HttpPost("logout", Name = "Logout")]
+    public async Task<IActionResult> DoLogout([FromBody] LoginRequest request)
+    {
+        var token = await _authService.DoLogin(request.Email, request.Password);
+        var cookieOptions = new CookieOptions()
+        {
+            IsEssential = true,
+            Expires = DateTime.UtcNow.AddDays(-1),
+            Secure = !_environment.IsEnvironment("Testing"),
+            HttpOnly = true,
+            SameSite = SameSiteMode.Lax
+        };
+        Response.Cookies.Append("accessToken", token, cookieOptions);
+        return Ok(new { Token = token });
+    }
+
     [HttpPost("register", Name = "Register")]
     public async Task<ActionResult<string>> Register([FromBody] LoginRequest request)
     {
