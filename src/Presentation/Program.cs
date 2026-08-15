@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.IdentityModel.Tokens;
 
+using MassTransit;
 using Npgsql;
 
 using Presentation.Exceptions;
@@ -50,6 +51,24 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 // Adicionando o handler de exceptions
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+// Configurações do RabbitMQ e MassTransit
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumers(typeof(Program).Assembly);
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 // Configurações de segurança
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

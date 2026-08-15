@@ -3,6 +3,10 @@ using Application.Booking.Exceptions;
 using Domain.Booking;
 using Domain.Identity;
 
+using Infrastructure.RabbitMQ;
+
+using MassTransit;
+
 namespace Application.Booking;
 
 public class BookingService
@@ -10,12 +14,17 @@ public class BookingService
 
 	private readonly IBookingRepository _bookingRepository;
     private readonly IHotelRepository _hotelRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-	public BookingService(IBookingRepository bookingRepository, IHotelRepository hotelRepository)
+	public BookingService(IBookingRepository bookingRepository, IHotelRepository hotelRepository, IUserRepository userRepository, IPublishEndpoint publishEndpoint)
 	{
 		_bookingRepository = bookingRepository;
         _hotelRepository = hotelRepository;
-	}
+        _userRepository = userRepository;
+        _publishEndpoint = publishEndpoint;
+
+    }
 
 	public async Task<List<Bookings>> GetByUser(Guid userId)
     {
@@ -40,6 +49,20 @@ public class BookingService
             EndDate = bookingRequest.EndDate,
             Status = bookingRequest.Status
         };
+
+        // Pegando informações extras para mandar o evento para o RabbitMQ
+        var user = await _userRepository.GetbyId(userId);
+        var userEmail = user!.Username;
+
+        // Manda o evento para a fila do RabbitMQ
+        await _publishEndpoint.Publish<SendBookingEmail>(new
+        {
+            ReceiverEmail = userEmail,
+            HotelName = hotelDb.Name,
+            HotelAddress = hotelDb.Address,
+            bookingRequest.StartDate,
+            bookingRequest.EndDate
+        });
 
         await _bookingRepository.Save(booking);
     }

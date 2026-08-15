@@ -16,6 +16,21 @@ public class UserRepository : IUserRepository
         _connectionString = configuration.GetConnectionString("DefaultConnection");
 	}
 
+	public async Task<User?> GetbyId(Guid id)
+	{
+        const string sql = """
+            SELECT id, username, password_hash AS PasswordHash
+            FROM users
+            WHERE id = @Id
+        """;
+
+        using var connection = new NpgsqlConnection(_connectionString);
+        return await connection.QuerySingleOrDefaultAsync<User>(
+            sql,
+            new { Id = id }
+        );
+    }
+
 	public async Task<User?> GetByUsername(string username)
 	{
 		const string sql = """
