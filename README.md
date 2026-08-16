@@ -56,17 +56,16 @@ cd ./DesafioTecnicoBackend_GerenciamentoReservas
 ```
 
 Crie um arquivo .env no caminho `/src/Presentation` com o seguinte conteúdo:
-
 ```env
 ConnectionStrings__DefaultConnection=
 
 JwtSettings__SecretKey=
 
 ```
-
 Preenchendo os dados de forma adequada
 
 
+Rode o projeto com:
 ```bash
 dotnet run --project "./src/Presentation"
 ```
