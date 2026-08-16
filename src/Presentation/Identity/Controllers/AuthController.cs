@@ -34,9 +34,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("logout", Name = "Logout")]
-    public async Task<IActionResult> DoLogout([FromBody] LoginRequest request)
+    public async Task<IActionResult> DoLogout()
     {
-        var token = await _authService.DoLogin(request.Email, request.Password);
+        var token = "";
         var cookieOptions = new CookieOptions()
         {
             IsEssential = true,
@@ -46,7 +46,7 @@ public class AuthController : ControllerBase
             SameSite = SameSiteMode.Lax
         };
         Response.Cookies.Append("accessToken", token, cookieOptions);
-        return Ok(new { Token = token });
+        return Ok();
     }
 
     [HttpPost("register", Name = "Register")]

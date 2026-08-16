@@ -16,12 +16,12 @@ public class AuthService
         var user = await _userRepository.GetByEmail(email);
         if (user == null)
         {
-            throw new UnauthorizedAccessException("Login failed: Invalid password or username");
+            throw new UnauthorizedAccessException("Login failed: Invalid email or username");
         }
         bool isPasswordValid = PasswordHasher.VerifyPassword(password, user.PasswordHash);
         if (!isPasswordValid)
         {
-            throw new UnauthorizedAccessException("Login failed: Invalid password or username");
+            throw new UnauthorizedAccessException("Login failed: Invalid email or username");
         }
         var token = _jwtService.GenerateToken(user.Id, user.Email);
         return token;
