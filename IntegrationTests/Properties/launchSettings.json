@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "IntegrationTests": {
+      "commandName": "Project"
+    },
+    "Perfil 1": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\mateu\\source\\repos\\mateusty\\DesafioTecnicoBackend_GerenciamentoReservas\\src\\Presentation"
+    }
+  }
+}

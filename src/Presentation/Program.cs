@@ -11,13 +11,15 @@ using DotNetEnv;
 
 using Infrastructure.Booking;
 using Infrastructure.Identity;
+using Infrastructure.RabbitMQ;
 using Infrastructure.Security;
+
+using MassTransit;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.IdentityModel.Tokens;
 
-using MassTransit;
 using Npgsql;
 
 using Presentation.Exceptions;
@@ -56,7 +58,7 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumers(typeof(Program).Assembly);
+    x.AddConsumers(typeof(SendBookingEmailConsumer).Assembly);
 
     x.UsingRabbitMq((context, cfg) =>
     {
