@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace Infrastructure.RabbitMQ
 {
     // O Consumer deveria ficar em uma API separada, mas pelo escopo do projeto, deixei aqui com o intuito de aprendizado
-    public class SendBookingEmailConsumer : IConsumer<SendBookingEmail>
+    public class SendBookingEmailConsumer : IConsumer<NewBookingEmail>
     {
         private readonly ILogger<SendBookingEmailConsumer> _logger;
 
@@ -14,7 +14,7 @@ namespace Infrastructure.RabbitMQ
             _logger = logger;
         }
 
-        public async Task Consume(ConsumeContext<SendBookingEmail> context)
+        public async Task Consume(ConsumeContext<NewBookingEmail> context)
         {
             var message = context.Message;
 

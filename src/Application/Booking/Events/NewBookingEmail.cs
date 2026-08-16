@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.RabbitMQ
 {
-    public record SendBookingEmail
+    public record NewBookingEmail
     {
         public string ReceiverEmail { get; init; } = string.Empty;
         public string HotelName { get; init; } = string.Empty;

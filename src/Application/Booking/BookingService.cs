@@ -55,7 +55,7 @@ public class BookingService
         var userEmail = user!.Email;
 
         // Manda o evento para a fila do RabbitMQ
-        await _publishEndpoint.Publish<SendBookingEmail>(new
+        await _publishEndpoint.Publish<NewBookingEmail>(new
         {
             ReceiverEmail = userEmail,
             HotelName = hotelDb.Name,
