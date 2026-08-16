@@ -10,6 +10,9 @@
 Use o seguinte script SQL para criacão de tabelas:
 
 ```sql
+CREATE DATABASE gerenciamento_reservas;
+USE gerenciamento_reservas;
+
 CREATE TABLE users (
 	id UUID PRIMARY KEY,
 	email VARCHAR(100) UNIQUE NOT NULL,
@@ -38,7 +41,7 @@ CREATE TABLE bookings (
 );
 ```
 
-## 1. Clone o repositório
+## 2. Clone o repositório
 
 No `cmd`, executar o comando:
 
@@ -52,10 +55,19 @@ Então mude para o diretório do projeto
 cd ./DesafioTecnicoBackend_GerenciamentoReservas
 ```
 
-## 2. Rodando o projeto
+Crie um arquivo .env no caminho `/src/Presentation` com o seguinte conteúdo:
+```env
+ConnectionStrings__DefaultConnection=
 
+JwtSettings__SecretKey=
+
+```
+Preenchendo os dados de forma adequada
+
+
+Rode o projeto com:
 ```bash
-dotnet run
+dotnet run --project "./src/Presentation"
 ```
 
 A API estará disponível na URL
